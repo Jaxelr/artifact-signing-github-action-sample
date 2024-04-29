@@ -1,0 +1,37 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    name: Build api and sign files with Trusted Signing
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install dependencies
+        run: dotnet restore MyApi/MyApi.csproj
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore MyApi/MyApi.csproj
+
+      - name: Sign files with Trusted Signing
+        uses: azure/trusted-signing-action@v0.3.15
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://scus.codesigning.azure.net/
+          code-signing-account-name: jaxel-scus-test
+          certificate-profile-name: jaxel-scus-test-001
+          files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
+          files-folder-filter: exe,dll
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
