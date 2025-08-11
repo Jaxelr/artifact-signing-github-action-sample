@@ -44,7 +44,7 @@ jobs:
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
           azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           endpoint: https://eus.codesigning.azure.net/
-          code-signing-account-name: jaxelr
+          trusted-signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
           files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
           files-folder-filter: exe,dll
