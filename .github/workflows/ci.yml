@@ -39,8 +39,8 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
-      - name: Sign files with Trusted Signing
-        uses: azure/trusted-signing-action@v0.5.11
+      - name: Sign files with Artifact Signing
+        uses: azure/trusted-signing-action@v85198b24fd0b1112545199f74a7cf9a01cdf6db9
         with:
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: jaxelr
