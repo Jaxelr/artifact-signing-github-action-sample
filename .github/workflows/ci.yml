@@ -40,7 +40,7 @@ jobs:
       #     enable-AzPSSession: true
 
       - name: Sign files with Artifact Signing
-        uses: azure/artifact-signing-action@v1
+        uses: azure/artifact-signing-action@feb49a698b0890ccf5ec219cd8fe2aea090f746d
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
