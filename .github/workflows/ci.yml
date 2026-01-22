@@ -44,6 +44,7 @@ jobs:
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
