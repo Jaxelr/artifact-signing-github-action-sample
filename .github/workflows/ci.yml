@@ -43,7 +43,7 @@ jobs:
         uses: azure/artifact-signing-action@v1
         with:
           endpoint: https://eus.codesigning.azure.net/
-          trusted-signing-account-name: jaxelr
+          signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
           files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
           files-folder-filter: exe,dll
