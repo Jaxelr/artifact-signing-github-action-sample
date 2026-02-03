@@ -12,7 +12,7 @@ jobs:
   build-and-sign:
     strategy:
       matrix:
-        os: [windows-2025]
+        os: [windows-2025, ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     
     name: Build and sign on ${{ matrix.os }}
