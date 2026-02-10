@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [windows-2025, windows-2022, windows-latest]
     runs-on: ${{ matrix.os }}
-    
+
     name: Build and sign on ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -40,7 +40,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Sign files with Artifact Signing
-        uses: azure/artifact-signing-action@d15bd923b715c1f30263832cf273326e44ec132b
+        uses: azure/artifact-signing-action@87c2e83e6868da99d3380aa309851b32ed9a8346
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
@@ -56,4 +56,3 @@ jobs:
         with:
           name: WebApp-${{ matrix.os }}
           path: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
-      
