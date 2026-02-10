@@ -40,7 +40,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Sign files with Artifact Signing
-        uses: azure/artifact-signing-action@87c2e83e6868da99d3380aa309851b32ed9a8346
+        uses: azure/artifact-signing-action@v1.1.0
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
