@@ -44,7 +44,7 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
-          files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
+          files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net10.0
           files-folder-filter: exe,dll
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
@@ -54,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: WebApp-${{ matrix.os }}
-          path: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
+          path: ${{ github.workspace }}\\MyApi\bin\Release\net10.0
