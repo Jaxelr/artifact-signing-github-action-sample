@@ -18,7 +18,7 @@ jobs:
     name: Build and sign on ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4
@@ -32,7 +32,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore MyApi/MyApi.csproj
 
       - name: Azure login
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -51,7 +51,7 @@ jobs:
           timestamp-digest: SHA256
 
       - name: Upload artifact on pull request
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v5
         with:
           name: WebApp-${{ matrix.os }}
           path: ${{ github.workspace }}\\MyApi\bin\Release\net8.0
