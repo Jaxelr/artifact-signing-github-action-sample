@@ -34,7 +34,7 @@ jobs:
       - name: Download .NET SDK installer
         shell: pwsh
         run: |
-          $sdkUrl = "https://download.visualstudio.microsoft.com/download/pr/6e8d0849-f042-4985-8a6a-fb8d6935ab87/888d14a1a04de94d5626f0b7ad7e5b70/dotnet-sdk-10.0.100-win-x64.exe"
+          $sdkUrl = "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.100/dotnet-sdk-10.0.100-win-x64.exe"
           New-Item -ItemType Directory -Force -Path ./download
           Invoke-WebRequest -Uri $sdkUrl -OutFile ./download/dotnet-sdk-10.0.100-win-x64.exe
 
