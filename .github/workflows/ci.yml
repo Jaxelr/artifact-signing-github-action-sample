@@ -31,6 +31,13 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore MyApi/MyApi.csproj
 
+      - name: Download .NET SDK installer
+        shell: pwsh
+        run: |
+          $sdkUrl = "https://download.visualstudio.microsoft.com/download/pr/6e8d0849-f042-4985-8a6a-fb8d6935ab87/888d14a1a04de94d5626f0b7ad7e5b70/dotnet-sdk-10.0.100-win-x64.exe"
+          New-Item -ItemType Directory -Force -Path ./download
+          Invoke-WebRequest -Uri $sdkUrl -OutFile ./download/dotnet-sdk-10.0.100-win-x64.exe
+
       - name: Azure login
         uses: azure/login@v3
         with:
@@ -38,13 +45,25 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Sign .NET SDK installer
+        uses: azure/artifact-signing-action@v1.2.0
+        with:
+          endpoint: https://eus.codesigning.azure.net/
+          signing-account-name: jaxelr
+          certificate-profile-name: jaxelr-pt
+          files-folder: ${{ github.workspace }}/download
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
       - name: Sign files with Artifact Signing
         uses: azure/artifact-signing-action@v1.2.0
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
-          files-folder: ${{ github.workspace }}\\MyApi\bin\Release\net10.0
+          files-folder: ${{ github.workspace }}/MyApi/bin/Release/net10.0
           files-folder-filter: exe,dll
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
@@ -54,4 +73,4 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: WebApp-${{ matrix.os }}
-          path: ${{ github.workspace }}\\MyApi\bin\Release\net10.0
+          path: ${{ github.workspace }}/MyApi/bin/Release/net10.0
