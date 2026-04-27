@@ -1,0 +1,63 @@
+name: ci-vsix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'MyVsix/**'
+      - '.github/workflows/ci-vsix.yml'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-sign-vsix:
+    strategy:
+      matrix:
+        os: [windows-2025, windows-2022, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    name: Build and sign VSIX on ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore MyVsix/MyVsix.csproj -SolutionDirectory MyVsix
+        shell: pwsh
+
+      - name: Build VSIX
+        run: msbuild MyVsix/MyVsix.csproj /p:Configuration=Release /p:DeployExtension=false /p:CreateVsixContainer=true
+        shell: pwsh
+
+      - name: Azure login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Sign VSIX with Artifact Signing
+        uses: azure/artifact-signing-action@4e0f2317be07bb9015f70ca80257c4705d474443
+        with:
+          endpoint: https://eus.codesigning.azure.net/
+          signing-account-name: jaxelr
+          certificate-profile-name: jaxelr-pt
+          files-folder: ${{ github.workspace }}/MyVsix/bin/Release
+          files-folder-filter: vsix
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: MyVsix-${{ matrix.os }}
+          path: ${{ github.workspace }}/MyVsix/bin/Release/*.vsix
