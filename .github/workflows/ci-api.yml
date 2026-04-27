@@ -1,21 +1,24 @@
-name: ci
+name: ci-api
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'MyApi/**'
+      - '.github/workflows/ci-api.yml'
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  build-and-sign:
+  build-and-sign-api:
     strategy:
       matrix:
         os: [windows-2025, windows-2022, windows-latest]
     runs-on: ${{ matrix.os }}
 
-    name: Build and sign on ${{ matrix.os }}
+    name: Build and sign API on ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -50,7 +53,7 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
-      - name: Upload artifact on pull request
+      - name: Upload API artifact
         uses: actions/upload-artifact@v6
         with:
           name: WebApp-${{ matrix.os }}
