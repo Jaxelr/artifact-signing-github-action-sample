@@ -45,7 +45,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Sign VSIX with Artifact Signing
-        uses: azure/artifact-signing-action@4e0f2317be07bb9015f70ca80257c4705d474443
+        uses: azure/artifact-signing-action@28e296df76229fba6a081e67e3eca87e3d5da360
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
