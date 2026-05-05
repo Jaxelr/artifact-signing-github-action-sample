@@ -1,35 +1,41 @@
-name: ci
+name: ci-vsix
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'MyVsix/**'
+      - '.github/workflows/ci-vsix.yml'
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  build-and-sign:
+  build-and-sign-vsix:
     strategy:
       matrix:
         os: [windows-2025, windows-2022, windows-latest]
     runs-on: ${{ matrix.os }}
 
-    name: Build and sign on ${{ matrix.os }}
+    name: Build and sign VSIX on ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: 10.0.x
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-      - name: Install dependencies
-        run: dotnet restore MyApi/MyApi.csproj
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore MyApi/MyApi.csproj
+      - name: Restore NuGet packages
+        run: nuget restore MyVsix/MyVsix.csproj -SolutionDirectory MyVsix
+        shell: pwsh
+
+      - name: Build VSIX
+        run: msbuild MyVsix/MyVsix.csproj /p:Configuration=Release /p:DeployExtension=false /p:CreateVsixContainer=true
+        shell: pwsh
 
       - name: Azure login
         uses: azure/login@v3
@@ -38,20 +44,20 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Sign files with Artifact Signing
+      - name: Sign VSIX with Artifact Signing
         uses: azure/artifact-signing-action@28e296df76229fba6a081e67e3eca87e3d5da360
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
-          files-folder: ${{ github.workspace }}/MyApi/bin/Release/net10.0
-          files-folder-filter: exe,dll
+          files-folder: ${{ github.workspace }}/MyVsix/bin/Release
+          files-folder-filter: vsix
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
-      - name: Upload artifact on pull request
+      - name: Upload VSIX artifact
         uses: actions/upload-artifact@v6
         with:
-          name: WebApp-${{ matrix.os }}
-          path: ${{ github.workspace }}/MyApi/bin/Release/net10.0
+          name: MyVsix-${{ matrix.os }}
+          path: ${{ github.workspace }}/MyVsix/bin/Release/*.vsix
