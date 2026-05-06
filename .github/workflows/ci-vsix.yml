@@ -23,15 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Setup NuGet
-        uses: nuget/setup-nuget@v2
-
-      - name: Restore NuGet packages
-        run: nuget restore MyVsix/MyVsix.csproj -SolutionDirectory MyVsix
-        shell: pwsh
       - name: Azure login
         uses: azure/login@v3
         with:
