@@ -32,11 +32,6 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore MyVsix/MyVsix.csproj -SolutionDirectory MyVsix
         shell: pwsh
-
-      - name: Build VSIX
-        run: msbuild MyVsix/MyVsix.csproj /p:Configuration=Release /p:DeployExtension=false /p:CreateVsixContainer=true
-        shell: pwsh
-
       - name: Azure login
         uses: azure/login@v3
         with:
@@ -50,7 +45,7 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
           certificate-profile-name: jaxelr-pt
-          files-folder: ${{ github.workspace }}/MyVsix/bin/Release
+          files-folder: ${{ github.workspace }}/MyVsix
           files-folder-filter: vsix
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
@@ -60,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: MyVsix-${{ matrix.os }}
-          path: ${{ github.workspace }}/MyVsix/bin/Release/*.vsix
+          path: ${{ github.workspace }}/MyVsix
