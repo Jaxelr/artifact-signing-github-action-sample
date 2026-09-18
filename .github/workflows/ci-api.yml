@@ -42,7 +42,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Sign files with Artifact Signing
-        uses: azure/artifact-signing-action@751eb65fcb4914d48cf43b6e39ba5e80047d955f
+        uses: azure/artifact-signing-action@2975878c00c34ed4a3c9a3725355bb9c60b899b5
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
