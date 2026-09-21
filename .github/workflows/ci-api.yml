@@ -52,6 +52,7 @@ jobs:
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
+          cache-dependencies: false
 
       - name: Upload API artifact
         uses: actions/upload-artifact@v6
