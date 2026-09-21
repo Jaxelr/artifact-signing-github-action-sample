@@ -31,7 +31,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Sign VSIX with Artifact Signing
-        uses: azure/artifact-signing-action@2975878c00c34ed4a3c9a3725355bb9c60b899b5
+        uses: azure/artifact-signing-action@8285e1e32378699b57febe52e80739f1ff64970a
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
@@ -41,7 +41,6 @@ jobs:
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
-          cache-dependencies: false
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v6
