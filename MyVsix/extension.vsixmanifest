@@ -2,7 +2,7 @@
   <Metadata>
     <Identity Id="MyVsix.4d2c0f35-9b1a-4e0a-9a2a-0d6e7f7b5c10" Version="1.0.0" Language="en-US" Publisher="Jaxelr" />
     <DisplayName>MyVsix Hello World</DisplayName>
-    <Description xml:space="preserve">A hello-world Visual Studio extension used as a sample artifact for code signing.</Description>
+    <Description xml:space="preserve">A minimal hello-world Visual Studio extension used as a sample artifact for code signing.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
