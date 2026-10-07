@@ -41,7 +41,7 @@ jobs:
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
-          cache-dependencies: true
+          cache-dependencies: false
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v6
