@@ -14,8 +14,9 @@ permissions:
 jobs:
   build-and-sign-vsix:
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-2025, windows-2022, windows-latest]
+        os: [windows-2025, windows-2022, windows-latest, windows-11-arm]
     runs-on: ${{ matrix.os }}
 
     name: Build and sign VSIX on ${{ matrix.os }}
@@ -31,7 +32,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Sign VSIX with Artifact Signing
-        uses: azure/artifact-signing-action@564fe7d1c7e9f9c241617dfefda4e4cabc77c50d
+        uses: Jaxelr/artifact-signing-action@jaxel/dotnet-10-support
         with:
           endpoint: https://eus.codesigning.azure.net/
           signing-account-name: jaxelr
